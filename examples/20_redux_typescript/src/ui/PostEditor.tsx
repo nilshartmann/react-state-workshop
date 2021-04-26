@@ -1,12 +1,16 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { clearDraft, setDraftBody, setDraftTitle } from "../redux/editor-slice";
+import { NewBlogPost } from "../types";
+import { useAppDispatch, useAppSelector } from "./redux-hooks";
+type PostEditorProps = {
+  onSavePost(post: NewBlogPost): void;
+};
 
-export default function PostEditor(props) {
-  const dispatch = useDispatch();
+export default function PostEditor(props: PostEditorProps) {
+  const dispatch = useAppDispatch();
 
-  const title = useSelector(state => state.editor.title);
-  const body = useSelector(state => state.editor.body);
+  const title = useAppSelector(state => state.editor.title);
+  const body = useAppSelector(state => state.editor.body);
 
   const clearDisabled = !title && !body;
   const saveButtonDisabled = !title || !body;
@@ -21,7 +25,10 @@ export default function PostEditor(props) {
 
       <label>
         Title
-        <input value={title} onChange={e => dispatch(setDraftTitle(e.currentTarget.value))} />
+        <input
+          value={title}
+          onChange={e => dispatch(setDraftTitle({ title: e.currentTarget.value }))}
+        />
       </label>
       {title ? (
         <Message type="info" msg="Title correctly filled"></Message>
@@ -31,7 +38,10 @@ export default function PostEditor(props) {
 
       <label>
         Body
-        <textarea value={body} onChange={e => dispatch(setDraftBody(e.currentTarget.value))} />
+        <textarea
+          value={body}
+          onChange={e => dispatch(setDraftBody({ body: e.currentTarget.value }))}
+        />
       </label>
       {body ? (
         <Message type="info" msg="Body correctly filled"></Message>
@@ -56,8 +66,14 @@ export default function PostEditor(props) {
   );
 }
 
-function Message({ msg, type = "error" }) {
-  const style = type === "error" ? { color: "red", fontWeight: "bold" } : { color: "green" };
+type MessageProps = {
+  msg: string;
+  type?: "error" | "info";
+};
+
+function Message({ msg, type = "error" }: MessageProps) {
+  const style =
+    type === "error" ? ({ color: "red", fontWeight: "bold" } as const) : { color: "green" };
 
   return <p style={style}>{msg}</p>;
 }

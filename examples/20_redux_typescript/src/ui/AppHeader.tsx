@@ -1,12 +1,12 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { clearDraft } from "../redux/editor-slice";
 import { openList } from "../redux/view-slice";
+import { useAppDispatch, useAppSelector } from "./redux-hooks";
 
 export default function AppHeader() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const hasDraft = useSelector(state => state.editor.title !== "" || state.editor.body !== "");
+  const hasDraft = useAppSelector(state => state.editor.title !== "" || state.editor.body !== "");
 
   return (
     <header>

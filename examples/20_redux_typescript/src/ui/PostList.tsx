@@ -1,11 +1,17 @@
 import React from "react";
 import moment from "moment";
+import { BlogPost } from "../types";
 
-function formattedDate(date) {
+function formattedDate(date: string) {
   return moment(date).format("DD.MM.YYYY");
 }
 
-export default function PostList(props) {
+type PostListProps = {
+  posts: BlogPost[];
+  onAddPost(): void;
+};
+
+export default function PostList(props: PostListProps) {
   const posts = props.posts;
 
   return (
