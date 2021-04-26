@@ -35,6 +35,16 @@
     "prefix": "hc",
     "body": ["", "<pre><code class=\"javascript\">", "  $0", "</code></pre>", ""]
   },
+  "Listitem Fragment": {
+    "scope": "html",
+    "prefix": "lif",
+    "body": ["", "<li class=\"fragment\">$0</li>", ""]
+  },
+  "UL Fragment": {
+    "scope": "html",
+    "prefix": "ulf",
+    "body": ["", "<ul>", "<li class=\"fragment\">$0</li>","</ul>", ""]
+  },
   "Code Fragment Block": {
     "scope": "html",
     "prefix": "hcf",

@@ -63,9 +63,9 @@ code span.line-number {
   color: lightcoral;
 }
 
-.reveal pre {
+/* .reveal pre {
   max-width: 1100px;
-}
+} */
 
 .reveal pre code {
   max-height: 1000px !important;
