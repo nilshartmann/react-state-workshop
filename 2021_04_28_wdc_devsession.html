@@ -223,11 +223,37 @@ Das ganze natürlich anhand vieler Code-Beispiele, um einen Eindruck der praktis
 
         <section data-markdown>
           <textarea data-template>
-            ## Verschiedene Arten von State 2
+            ## Zustand und berechneter Zustand
+
+            * Eine Information unserer Anwendung sollte immer nur einem Zustand, einer Stelle liegen
+            * Daraus können dann Werte abgeleitet oder berechnet werden, z.B.
+              * sortierte oder gefilterte Listen
+              * berechnete Werte (z.B. ein Brutto-Preis)
+              * formatierte Daten (z.B. ein voller Name samt Anrede und Titel)
+            * In der Regel werden solche Daten nicht in einen Zustand gelegt, sondern beim Rendern berechnet
+            * Mit `useMemo` können Werte in React gecached werden
+            
+      
+          </textarea>
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
+            ## Verschiedene Arten von State 3
 
             ### Struktur von lokalem Zustand
             * "Einfacher" Zustand: mehrere useState-Aufrufe in einer Komponente
             * "Komplexer" Zustand: *ein* State, der ein Objekt enthält
+          </textarea>
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
+            ### Hinweis: TypeScript
+
+            * Ich zeige heute Beispiele in JavaScript und TypeScript
+            * Aber **alle** Bibliotheken, die ich zeige funktioneren hervorragend mit TypeScript!
+            * Für "größere" Anwendungen würde ich immer TypeScript empfehlen
           </textarea>
         </section>
 
@@ -284,50 +310,19 @@ const newPerson = {
   address: { ...newPerson.address, city: "Hamburg" } 
 }
             </code></pre>
-        </section>
-
-        <!-- ============================================================================= -->
-        <section>
-          <h3>Beispiel: Arbeiten mit immutable Objekten (ES6)</h3>
-
+          <h3 class="fragment">Ändern von Arrays mit Array-Spread-Operator</h3>
           <pre class="fragment"><code class="javascript">
-        // Spread-Operator bei Arrays
+            // Verändern von Arrays:
 
-        const oldArray = [ "b", "c" ];
+            const newArray = oldArray.map(oldEntry => {
+              if (oldEntry.id === "user-1") { // dieses Element soll verändert werden
+                return { ...oldEntry, name: "Klaus" }
+              }
+              return oldEntry; // unverändert
+            });
+    
+            // newArray ist eine Kopie, mit ggf. veränderten Einträgen
 
-        // Anfügen eines Elementes
-        const newArray = [
-          "a",  // vorne anfügen
-          ...oldArray, // hier altes Array reinkopieren
-          "c" // hinten anfügen
-        ]
-
-      </code></pre>
-        </section>
-
-        <section>
-          <h3>Beispiel: Arbeiten mit immutable Objekten (ES6)</h3>
-
-          <h3 class="fragment">Verändern von Objekten in Arrays</h3>
-
-          <pre class="fragment"><code class="javascript">
-        // Verändern von Arrays:
-
-        const newArray = oldArray.map(oldEntry => {
-          if (oldEntry.id === "user-1") { // dieses Element soll verändert werden
-            return { ...oldEntry, name: "Klaus" }
-          }
-          return oldEntry; // unverändert
-        });
-
-        // newArray ist eine Kopie, mit ggf. veränderten Einträgen
-      </code></pre>
-
-          <pre class="fragment"><code class="javascript">
-        const newArray = oldArray.filter(oldEntry => oldEntry.id === idToBeRemoved);
-
-        // newArray ist eine Kopie ohne die rausgefilterten Eintraege
-        
       </code></pre>
         </section>
 
@@ -514,10 +509,9 @@ const newPerson = {
 
         <!-- ============================================================================= -->
         <section>
-          <h3 class="todo">
-            Evtl Beispiel: Shopping Cart Liste kann per reducer verwaltet werden, dann auch Test
-            zeigen
-          </h3>
+          <h3>useReducer-Hook für komplexen Zustand</h3>
+
+          <p>Beispiel: 05_reducer/01_reducer_complete</p>
         </section>
 
         <section>
@@ -557,13 +551,10 @@ const newPerson = {
           </ul>
 
           <pre class="fragment"><code class="javascript">
-        const apiRequestStartedAction = {
-          type: "requestStarted"; // kein Payload erforderlich
-        }
-
-        const apiRequestFinishedAction = {
-          type: "requesFinished",
-          dataReceived: data  // Action-spezifischer Payload (hier: geladene Daten)
+        const addItemAction = {
+          type: "addItem",
+          itemName: "Book"  // Action-spezifischer Payload (hier: Name des neuen Eintrags)
+          itemQuantity: 
         }
       </code></pre>
         </section>
@@ -583,20 +574,21 @@ const newPerson = {
 
           <pre class="fragment"><code class="javascript">
 function apiReducer(state, action) {
-  switch (action.type) {
-    case "requestStarted": {
-      // vorherigen Zustand teilweise übernehmen
-      return { ...state, status: "loading" };
-    }
-
-    case "requestFinished": {
-      // komplett neuen Zustand zurückliefern
-      return { status: "finished", data: action.dataReceived };
-    }
-
-    return state; // alle anderen Actions: Zustand unverändert zurück
+  return produce(state, newState => { // immer!
+    switch (action.type) {
+      case "addItem": 
+        let currentItem = newState.find(item => item.name === action.itemName);
+        if (currentItem) {
+          currentItem.quantity += parseInt(action.itemQuantity);
+        } else {
+          // ...
+          newState.push(currentItem);
+        }
+        case "...":
+        // ...
+      }
+    })
   }
-}            
       </code></pre>
         </section>
 
@@ -627,12 +619,10 @@ function apiReducer(state, action) {
 
           <pre class="fragment"><code class="javascript">
         function App() {
-          const [apiState, dispatch] = React.useReducer(apiReducer, { status: "loading" });
+          const [items, dispatch] = React.useReducer(apiReducer, [{name: "book", quantity: 1}]);
 
-          function loadData() {
-            dispatch({ type: "requestStarted "});
-            // ...Daten laden...
-            dispatch({ type: "requestFinished", dataReceived: "..."});
+          function handleUpdateClick() {
+            dispatch({ type: "addItem", { itemName: "...", itemQuantity: 3 }});
           }
 
           // ...
@@ -641,13 +631,21 @@ function apiReducer(state, action) {
       </code></pre>
         </section>
 
+        <section data-markdown>
+          <textarea data-template>
+            ### useReducer: wann?
+
+            * Verarbeitung von komplexem Zustand mit komplexen Regeln
+            * Man möchte die Logik nicht React-abhängig haben
+          </textarea>
+        </section>
         <section data-markdown id="t-usecontext">
           <textarea data-template>
         ### Nächster Schritt: Globaler Zustand
 
         * Man kann Zustand in **lokalen Zustand** und **globalen Zustand** einteilen
         * **Lokaler Zustand** ist Zustand, der "mehr oder weniger" einer Komponente zur Verfügung steht
-        * **Globlaer Zustand** hingegen ist für die ganze Anwendung oder große Teile davon zuständig
+        * **Globaler Zustand** hingegen ist für die ganze Anwendung oder große Teile davon zuständig
         * Die Übgergänge sind fließend, es gibt keine fixe Definition
 
         * Beispiele für globalen Zustand: angemeldeter Benutzer, Theme
@@ -677,17 +675,17 @@ function apiReducer(state, action) {
           <p>👉 examples/context/ CounterContext und App implementieren!</p>
         </section>
 
-        <!-- ============================================================================= -->
-        <section>
-          <h3>Anwendungsfälle Context</h3>
+        <section data-markdown>
+          <textarea data-template>
+            ### Context: Wann verwenden?
 
-          <ul>
-            <li class="fragment">
-              Mehr oder weniger "statische" globale Daten (z.B. Theme, Benutzer)
-            </li>
-
-            <li class="fragment">Zustand um "logische" Komponenten (Beispiel: Formular)</li>
-          </ul>
+            * Mehr oder weniger "statische" globale Daten (z.B. Theme, Benutzer)
+              * Für Daten, die sich häufig ändern, wird vom Context (noch) abgeraten, könnte sich aber ändern
+            * Zustand für "logische" Komponenten (Beispiel: Formular, dessen Kinder auf Formular-Daten Zugriff brauchen)
+            * Zur Verfügung stellen von Infrastruktur-Diensten (als "Dependency Injection"-Ersatz)
+              * Bereitstellen z.B. von APIs in der Anwendung, die ihrerseits reaktiv sein sollen/müssen
+              * Z.B. Http-Funktion, die REST Requests macht, und den aktuellen Benutzer (aus anderem Context?) verwendet
+          </textarea>
         </section>
 
         <!-- ============================================================================= -->
@@ -807,6 +805,106 @@ function ThemeChooser() {
           </code></pre>
         </section>
 
+        <!-- ============================================================================= -->
+        <section id="t-query-libs">
+          <h2>Query Libraries</h2>
+          <h3>Für Daten vom Server (Caching)</h3>
+
+          <ul>
+            <li class="fragment">Ein "Speziallfall" von globalen Daten</li>
+
+            <li class="fragment">
+              Daten, die vom Server gelesen werden und in der Anwednung z.B. gecached werden sollen
+            </li>
+
+            <li class="fragment">
+              Möglicherweise werden diese Daten sogar nur zur Darstellung benötigt...
+            </li>
+
+            <li class="fragment">
+              ...oder werden nur durch Server-Aufruf geändert, aber nicht direkt am Client
+            </li>
+          </ul>
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
+            ### Data Libraries für React: Anforderungen
+
+            * Daten laden/schreiben, HTTP GET, POST, PUT, DELETE, ...
+            * Caching samt korrektem Invalidieren...
+            * Requests sollen nicht bei jedem Rendern ausgeführt werden
+            * globales(!) Caching: Daten sollen über Komponetengrenzen und -wechsel erhalten bleiben
+            * Re-fetching?
+            * Fehlerbehandlung
+            * Request-Lebenszyklus: Läuft mein Request noch? (Wie) wurde er beendet? 
+          </textarea>
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
+            ### Data Libraries für React: Typische Vertreter
+
+            * [SWR](https://swr.vercel.app/) und [React Query](https://react-query.tanstack.com/)
+            * Neu für Redux (Beta!): [Redux Toolkit Query](https://rtk-query-docs.netlify.app/)
+            * Erste(?) Lib dieser Art: [Apollo](https://www.apollographql.com/docs/react/) (für GraphQL)
+            * Idee bei allen ähnlich: es gibt einen Custom-Hook, der Daten lädt/schreibt, man bekommt Request Status/Daten zurück, Ergebnisse werden gecached
+            * Automatisches Refresh der Daten z.B. nach Zeitintervall oder re-mount einer Komponente
+          </textarea>
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
+            ### Beispiel: SWR
+
+            * `15_datalib/02_datalibs_finish`
+          </textarea>
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
+            Wann verwenden?
+
+            * Anwendungen mit Daten, die an vielen Stellen Daten vom Server lesen/dahin schreiben
+            * Für lokale Caching von serverseitigen Daten
+            * "Echte" API Requests (mit Loading Indicatoren, Refetching etc)
+              * Für einmalige Login-Maske wahrscheinlich zu viel des Guten
+            * Insbesondere wenn keine anderen Statemanagement Libraries zum Einsatz kommen (sollen)
+              * Erübrigt in vielen Fällen den Einsatz von Redux o.ä.
+              * Grundsätzlich kombinierbar mit anderen State-Libs und natürlich dem Context
+          </textarea>
+        </section>
+
+        <!-- ============================================================================= -->
+        <section>
+          <h3>DataLibs: Examplarische Verwendung</h3>
+          <p><em>APIs sehen bei SWR, React-Query und Apollo ähnlich aus</em></p>
+
+          <pre class="fragment"><code class="javascript">
+            // konzeptionell
+            function User() {
+              // Rückgabe-Wert enthält Informationen über den Request-Status
+              // Parameter für useXyz ist ein Cache-Key (kann z.B. die URL sein)
+              // es gibt - je nach Lib - diverse Optionen zur Konfiguration!
+              const { data, loading, error } = useSWR("/api/user");
+
+              if (loading) {
+                return &lt;h1>User is loading &lt;/h1>;
+              }
+
+              if (error) {
+                return &lt;h1>User could not be loaded&lt;/h1>
+              }
+
+              if (data) {
+                return &lt;div>...&lt/div>
+              }
+  
+            }
+
+          </code></pre>
+        </section>
+
         <section id="t-redux">
           <h2>Redux</h2>
           <h3>External Statemanagement</h3>
@@ -817,21 +915,15 @@ function ThemeChooser() {
             ### Externes Statemanagement
 
             * **Externes** Statemanagement bedeutet, dass der Zustand aus deinen Komponenten herauswandert
-            * Wird haben das exemplarisch bereits bei `useReducer` gesehen
             * Mit externem Statemanagement wird in der Regel **globaler Zustand** verwaltet
-            * Es gibt mehrere Bibliotheken, die beiden bekanntesten sind:
+            * Es gibt mehrere Bibliotheken, die bekanntesten sind:
               * [Redux](https://redux.js.org/)
               * [MobX](https://mobx.js.org/README.html)
+              * [Recoil](https://recoiljs.org/)
             * Beide sind zunächst React-unabhängig und für mehrere Webframeworks verfügbar
             * D.h. die Logik, die Du damit entwickelst kannst Du prinzipiell auch mit anderen Webframeworks nutzen
             * Weitere Vertreter: [Recoil](https://recoiljs.org/) ebenfalls von Facebook, [OvermindJS](https://overmindjs.org/), von Codesandbox
           </textarea>
-        </section>
-
-        <!-- ============================================================================= -->
-        <section id="t-query-libs">
-          <h2>Query Libraries</h2>
-          <h3>Für Daten vom Server (Caching)</h3>
         </section>
 
         <section id="redux">
@@ -843,11 +935,8 @@ function ThemeChooser() {
 
           <ul>
             <li class="fragment">Der "Klassiker" unter den State Libs</li>
-
             <li class="fragment">Mit Sicherheit höchste Verbreitung, meistes Wissen etc.</li>
-
             <li class="fragment">Exzellentes Developer Tooling</li>
-
             <li class="fragment">
               (Vor-)Urteile
 
@@ -859,13 +948,9 @@ function ThemeChooser() {
                 <li class="fragment">kein Support für Data Fetching</li>
               </ul>
             </li>
-
             <li class="fragment">Hier hat sich aber einiges getan!</li>
-
             <li class="fragment">Hooks API, Redux Toolkit</li>
           </ul>
-
-          <p>Anwendung: 👉 20_redux/2-redux_complete</p>
         </section>
         <section>
           <h3>Wiederholung</h3>
