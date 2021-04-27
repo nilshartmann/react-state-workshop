@@ -434,6 +434,16 @@ const newPerson = {
           </code></pre>
         </section>
 
+        <section data-markdown>
+          <textarea data-template>
+            ### Immer: wann verwenden
+
+            * immer lohnt sich nur bei komplexen Objekten
+            * Einfache Objekte kann man auch gut mit ES6 Operatoren verarbeiten
+            * Bei der Arbeit mit Reducern (Redux, useReducer) sehr zu empfehlen
+          </textarea>
+        </section>
+
         <!-- <section>
           <h3>Nächster Schritt</h3>
           <h2>Zustand "verteilen"</h2>
@@ -1507,6 +1517,19 @@ function ThemeChooser() {
           </code></pre>
         </section>
 
+        <section data-markdown>
+          <textarea data-template>
+            ### Redux: wann einsetzen?
+
+            * Große Anwendungen
+              * mit vielen globalen Daten
+              * mit viel Logik
+            * Arbeiten mit mehreren Teams
+              * Anwendung kann durch Actions/Reducer sehr gut getrennt entwickelt werden
+            * Falls Redux, dann Redux Toolkit
+          </textarea>
+        </section>
+
         <section>
           <h3>Was nehme ich denn jetzt?</h3>
           <h3>Redux vs Context</h3>
@@ -1942,6 +1965,19 @@ const PostList = observe(function PostList() {
 
         <section data-markdown>
           <textarea data-template>
+            ### Recoil: wann einsetzen
+
+            * Anwendungen, mit vielen unabhängigen Daten
+              * Zum Beispiel Graphik-Programm, in dem die Eigenschaften der Objekte in Atomen gehalten werden
+            * Anwendungen, in denen Daten mehr oder minder nur gesetzt und gelesen werden
+              * ohne größere Logik
+            * Vielleicht aktuell noch zu wenig verbreitet
+              * Weitere Entwickung beobachten  
+          </textarea>
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
             ### Recoil vs. Redux/Mobx
 
             * Recoil noch sehr jung, interessantes Konzept
@@ -1954,7 +1990,6 @@ const PostList = observe(function PostList() {
             * Recoil arbeitet mit Suspense und [Concurrent Rendering](https://recoiljs.org/blog/2020/09/15/0.0.11-released/#experimental-concurrent-mode-support) zusammen  
               * noch experimentell
               * für MobX und Redux noch unklar, technisch schwierig umzusetzen
-            * Recoil eher für unabhängige Daten (z.B. Graphik-Programm)
             * Recoil in jedem Fall React-abhängig, Kerne von MobX und Redux sind React-unabhängig
 
           </textarea>
