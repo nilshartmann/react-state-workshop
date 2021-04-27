@@ -35,11 +35,23 @@
             </span>
           </h4>
 
-          <div>
+          <div style="margin-top: 4rem">
             <h3><span class="transparent-bg">Slides</span></h3>
             <p>
               <span class="transparent-bg"
-                >Lokal: react-training/2021_04_19_typescript_state.html</span
+                ><a href="https://react.schule/wdc21-state"
+                  >https://react.schule/wdc21-state</a
+                ></span
+              >
+            </p>
+          </div>
+          <div style="margin-top: 4rem">
+            <h3><span class="transparent-bg">Beispiele</span></h3>
+            <p>
+              <span class="transparent-bg"
+                ><a href="https://github.com/nilshartmann/react-state-workshop"
+                  >https://github.com/nilshartmann/react-state-workshop</a
+                ></span
               >
             </p>
           </div>
@@ -98,9 +110,9 @@ Das ganze natürlich anhand vieler Code-Beispiele, um einen Eindruck der praktis
             ### Zeitplan 
 
             * 09:00-10:15
-            * ca. 10:15-10:30 Pause 🍝 
+            * ca. 10:15-10:30 Pause ☕️ 
             * 10:30-11:45
-            * ca. 11:45-12:00 Pause
+            * ca. 11:45-12:00 Pause 😴
             * 12:00-13:00 
 
           </textarea>
@@ -118,11 +130,6 @@ Das ganze natürlich anhand vieler Code-Beispiele, um einen Eindruck der praktis
           </textarea>
         </section>
 
-        <!-- ============================================================================= -->
-        <section>
-          <h3>Agenda</h3>
-        </section>
-
         <section data-markdown>
           <textarea data-template>
             ### Zum Einstieg...
@@ -133,20 +140,24 @@ Das ganze natürlich anhand vieler Code-Beispiele, um einen Eindruck der praktis
           </textarea>
         </section>
 
-        <section data-markdown>
-          <textarea data-template>
-            ### Agenda
+        <!-- ============================================================================= -->
+        <section>
+          <h3>Agenda</h3>
 
-            * **Prio 1: Eure Fragen, Probleme und Wünsche** 
+          <ul>
+            <li class="fragment"><a href="#/t-intro">Einführung: Arten von State</a></li>
 
-            * State Grundlagen (Wiederholung)
-            * Arbeiten mit komplexem State
-            * React Context API für globalen State
-            * Redux für externen State
+            <li class="fragment">
+              React Bordmittel: <a href="#/t-usereducer">useReducer</a> und
+              <a href="#/t-usecontext">Context</a>
+            </li>
 
-            * (Unterschiedliche React-Versionen) 
-            * (Router)
-          </textarea>
+            <li class="fragment"><a href="#/t-query-libs">Bibliotheken zum Data Fetching</a></li>
+            <li class="fragment">
+              <a href="#/t-redux">Redux</a> und <a href="#/t-redux-toolkit">Redux Toolkit</a>
+            </li>
+            <li class="fragment"><a href="#/t-mobx">MobX</a></li>
+          </ul>
         </section>
 
         <section data-markdown>
@@ -163,7 +174,7 @@ Das ganze natürlich anhand vieler Code-Beispiele, um einen Eindruck der praktis
           >
         </section>
 
-        <section data-markdown>
+        <section data-markdown id="t-intro">
           <textarea data-template>
             ## State... ein paar Basics
 
@@ -173,7 +184,7 @@ Das ganze natürlich anhand vieler Code-Beispiele, um einen Eindruck der praktis
 
         <section data-markdown>
           <textarea data-template>
-            ## Verschiende Arten von State 1
+            ## Verschiedene Arten von State 1
 
             ### "Reichweite"
             * Lokaler State: Zustand, der nur von einer (logischen) Komponente benötigt wird
@@ -201,17 +212,18 @@ Das ganze natürlich anhand vieler Code-Beispiele, um einen Eindruck der praktis
           <textarea data-template>
             ## Wo wird Zustand gehalten?
 
-            * Lokal oder global in der Komponentenhierarchie (React, Recoil)
+            * Lokal oder global in der Komponentenhierarchie (React, Recoil (?))
             * Global außerhalb der Komponentenhierarchie (Redux, MobX)
             * In der URL 😳
               * Was in die URL kommt ist eine **fachliche**, keine **technische** Frage
               * Welche Informationen möchte ich verlinkbar haben? Aktuellen Blog-Post? Sortierreihenfolge?
+            * Auf dem Server 
           </textarea>
         </section>
 
         <section data-markdown>
           <textarea data-template>
-            ## Verschiende Arten von State 2
+            ## Verschiedene Arten von State 2
 
             ### Struktur von lokalem Zustand
             * "Einfacher" Zustand: mehrere useState-Aufrufe in einer Komponente
@@ -250,7 +262,7 @@ Das ganze natürlich anhand vieler Code-Beispiele, um einen Eindruck der praktis
         </section>
 
         <section>
-          <h3>Arbeiten mit immutable Objekten (ES6)</h3>
+          <h3>Beispiel: Arbeiten mit immutable Objekten (ES6)</h3>
           <pre class="fragment"><code class="typescript line-numbers" contenteditable data-trim>
         // Objekt-Spread-Operator zum Kopieren und verändern
 
@@ -276,7 +288,7 @@ const newPerson = {
 
         <!-- ============================================================================= -->
         <section>
-          <h3>Arbeiten mit immutable Objekten (ES6)</h3>
+          <h3>Beispiel: Arbeiten mit immutable Objekten (ES6)</h3>
 
           <pre class="fragment"><code class="javascript">
         // Spread-Operator bei Arrays
@@ -294,7 +306,7 @@ const newPerson = {
         </section>
 
         <section>
-          <h3>Arbeiten mit immutable Objekten (ES6)</h3>
+          <h3>Beispiel: Arbeiten mit immutable Objekten (ES6)</h3>
 
           <h3 class="fragment">Verändern von Objekten in Arrays</h3>
 
@@ -311,8 +323,6 @@ const newPerson = {
         // newArray ist eine Kopie, mit ggf. veränderten Einträgen
       </code></pre>
 
-          <h3 class="fragment">Einträge aus Arrays entfernen</h3>
-
           <pre class="fragment"><code class="javascript">
         const newArray = oldArray.filter(oldEntry => oldEntry.id === idToBeRemoved);
 
@@ -322,9 +332,9 @@ const newPerson = {
         </section>
 
         <section>
-          <h3>Arbeiten mit immutable Objekten (ES6)</h3>
+          <h3>Fazit: Arbeiten mit immutable Objekten (ES6)</h3>
 
-          <h3 class="fragment">😱 😰 😨</h3>
+          <h3>😱 😰 😨</h3>
         </section>
 
         <section data-markdown>
@@ -346,32 +356,34 @@ const newPerson = {
         <!-- ============================================================================= -->
         <section>
           <h3>Immer: produce-Funktion</h3>
-
-          <p>
-            Die <b>produce</b>-Funktion bekommt ein Objekt übergeben, sowie eine zweite Funktion,
-            die von immer mit einem Draft aufgerufen wird.
-          </p>
-          <p>Dieses Draft kann verändert werden</p>
-          <p>
-            Der Rückgabe-Typ der produce-Funktion ist dann eine Kopie des alten Objektes mit den
-            Änderungen, die auf dem Draft vorgenommen wurden.
-          </p>
-
           <pre class="fragment"><code class="javascript">
-              import produce from "immer";
+            import produce from "immer";
 
-              const person = { name: "Klaus", address: { city: "Berlin", country: "Germany"} };
+            const person = { name: "Klaus", address: { city: "Berlin", country: "Germany" }, hobbies: ["Musik"] };
 
-              const newPerson = produce(person, draft => {
-                person.name = "Susi";
-                person.address.city = "Hamburg";
-              })
+            const newPerson = produce(person, draft => {
+              person.name = "Susi";
+              person.address.city = "Hamburg";
+              person.hobbies.push("Programmieren")
+            })
 
-              newPerson; // Neues Objekt!
-              newPerson.name; // Susi
-              newPerson.address // Neues Objekt!
-              newPerson.address.city; // Hamburg
-            </code></pre>
+            newPerson; // Neues Objekt!
+            newPerson.name; // Susi
+            newPerson.address // Neues Objekt!
+            newPerson.address.city; // Hamburg
+            newPerson.hobbies // Neues Array! (Musik, Programmieren)
+          </code></pre>
+          <div class="fragment">
+            <p>
+              Die <b>produce</b>-Funktion bekommt ein Objekt übergeben, sowie eine zweite Funktion,
+              die von immer mit einem Draft aufgerufen wird.
+            </p>
+            <p>Dieses Draft kann verändert werden</p>
+            <p>
+              Der Rückgabe-Typ der produce-Funktion ist dann eine Kopie des alten Objektes mit den
+              Änderungen, die auf dem Draft vorgenommen wurden.
+            </p>
+          </div>
         </section>
 
         <!-- ============================================================================= -->
@@ -474,7 +486,7 @@ const newPerson = {
               </code></pre>
         </section> -->
 
-        <section data-markdown>
+        <section data-markdown id="t-usereducer">
           <textarea data-template>
         ### Verwaltung von komplexem Zustand
 
@@ -490,17 +502,27 @@ const newPerson = {
         * Wir halten den Zustand lokal in einer Komponente
         * Sämtliche Änderungen daran passieren innerhalb der Komponente
         * Mit einer **reducer-Funktion** kann die Verwaltung des Zustandes aus der Komponente herausgelöst werden
-          * (Der Zustand gehört aber weiterhin der Komponente)
-        * Dadurch zum Beispiel besser testbar (Reducer sind pure Funktionen, normaler Unit-Test genügt)
-        * Wiederverwendbar (keine Abhängigkeit auf React)
-        * Trennung UI/Logik, könnte zu übersichtlicherem Code führen 
+          * (Der Zustand gehört aber weiterhin der Komponente, wenn Komponente weg, Zustand weg...)
+        * Gründe könnten sein:
+          * besser testbar (Reducer sind pure Funktionen, normaler Unit-Test genügt)
+          * Wiederverwendbar (keine Abhängigkeit auf React)
+          * Trennung UI/Logik, könnte zu übersichtlicherem Code führen, Komponenten-Code wird "entlastet"
+        * Verwendet jemand useReducer? Wofür? 🙋  
       </textarea
           >
         </section>
 
+        <!-- ============================================================================= -->
+        <section>
+          <h3 class="todo">
+            Evtl Beispiel: Shopping Cart Liste kann per reducer verwaltet werden, dann auch Test
+            zeigen
+          </h3>
+        </section>
+
         <section>
           <h3>useReducer-Hook</h3>
-          <p>Hintergrund: Eine reducer-Funktion...</p>
+          <p>Eine reducer-Funktion...</p>
           <ul>
             <li class="fragment">
               ...erhält einen (vorherigen) Zustand und eine Action als Parameter übergeben
@@ -522,14 +544,6 @@ const newPerson = {
               (z.B. <code>Array.reduce</code>)</em
             >
           </p>
-        </section>
-
-        <!-- ============================================================================= -->
-        <section>
-          <h3 class="todo">
-            Evtl Beispiel: Shopping Cart Liste kann per reducer verwaltet werden, dann auch Test
-            zeigen
-          </h3>
         </section>
 
         <!-- ============================================================================= -->
@@ -627,7 +641,7 @@ function apiReducer(state, action) {
       </code></pre>
         </section>
 
-        <section data-markdown>
+        <section data-markdown id="t-usecontext">
           <textarea data-template>
         ### Nächster Schritt: Globaler Zustand
 
@@ -651,8 +665,7 @@ function apiReducer(state, action) {
         * Der **React Context** ist eine Möglichkeit, globalen Zustand Komponenten zur Verfügung zu stellen, ohne ihn über Properties durchreichen zu müssen
         * Es gibt dabei eine **Provider** Komponente, die ein beliebiges Objekt, den Kontext, allen unterhalb liegenden Komponenten zur Verfügung stellt
         * Das Objekt kann Daten und (Callback-)Funktionen enthalten
-        * Das Prinzip ist ähnlich wie wir es schon gesehen haben, nur dass diese Daten nicht explizit per Properties von einer Ebene zur nächsten weitergerreicht werden müssen.
-        Stattdessen findet das Durchreichen transparent statt
+          * Konzept fast wie "klassisches" React mit durchreichen von Properties und Callbacks - nur ohne durchreichen, das passiert transparent„
         * Du kannst beliebig viele Kontexte in deiner Anwendung verwenden. Dann hast Du entsprechend mehr Provider-Komponenten.
       </textarea
           >
@@ -662,6 +675,19 @@ function apiReducer(state, action) {
         <section>
           <h3>Beispiel</h3>
           <p>👉 examples/context/ CounterContext und App implementieren!</p>
+        </section>
+
+        <!-- ============================================================================= -->
+        <section>
+          <h3>Anwendungsfälle Context</h3>
+
+          <ul>
+            <li class="fragment">
+              Mehr oder weniger "statische" globale Daten (z.B. Theme, Benutzer)
+            </li>
+
+            <li class="fragment">Zustand um "logische" Komponenten (Beispiel: Formular)</li>
+          </ul>
         </section>
 
         <!-- ============================================================================= -->
@@ -799,15 +825,48 @@ function ThemeChooser() {
             * Beide sind zunächst React-unabhängig und für mehrere Webframeworks verfügbar
             * D.h. die Logik, die Du damit entwickelst kannst Du prinzipiell auch mit anderen Webframeworks nutzen
             * Weitere Vertreter: [Recoil](https://recoiljs.org/) ebenfalls von Facebook, [OvermindJS](https://overmindjs.org/), von Codesandbox
-              * Hier eher globales, aber nicht unbedingt **externes** Statemanagement
           </textarea>
         </section>
 
-        <section>
+        <!-- ============================================================================= -->
+        <section id="t-query-libs">
+          <h2>Query Libraries</h2>
+          <h3>Für Daten vom Server (Caching)</h3>
+        </section>
+
+        <section id="redux">
           <h2>Beispiel: Redux</h2>
           <p>Anwendung: 👉 20_redux/2-redux_complete</p>
         </section>
+        <section>
+          <h3>Beispiel: Redux</h3>
 
+          <ul>
+            <li class="fragment">Der "Klassiker" unter den State Libs</li>
+
+            <li class="fragment">Mit Sicherheit höchste Verbreitung, meistes Wissen etc.</li>
+
+            <li class="fragment">Exzellentes Developer Tooling</li>
+
+            <li class="fragment">
+              (Vor-)Urteile
+
+              <ul>
+                <li class="fragment">viel Boilerplate-Code nötig</li>
+                <li class="fragment">
+                  verwendetes Konzept von Higher-Order-Components schwer verständlich
+                </li>
+                <li class="fragment">kein Support für Data Fetching</li>
+              </ul>
+            </li>
+
+            <li class="fragment">Hier hat sich aber einiges getan!</li>
+
+            <li class="fragment">Hooks API, Redux Toolkit</li>
+          </ul>
+
+          <p>Anwendung: 👉 20_redux/2-redux_complete</p>
+        </section>
         <section>
           <h3>Wiederholung</h3>
           <h2>Render Cycle in Pure React</h2>
@@ -824,90 +883,16 @@ function ThemeChooser() {
           <p>👉 2-redux-workspace (PostEditor und post-slice)</p>
         </section>
 
-        <section>
-          <h2>Strukturierter Überblick über alle Redux Teile</h2>
-        </section>
-
         <section data-markdown>
           <textarea data-template>
             ### Redux: Konzepte
 
             * **Store**: eine Art "Datenbank", die außerhalb der Komponentenhierachie liegt. Hier ist der globale Zustand untergebracht. Komponenten werden über Veränderungen informiert und können sich re-rendern
-            * **Actions**: Einfache JavaScript-Objekte, die beschreiben was in einer Anwendung passiert. Bestehen aus einem Type und einem fachlichen Payload.
-            * **Reducer**-Funktionen: Funktionen, in denen die Logik zur Verarbeitung des Zustands untergebracht ist. Sie erhalten eine Action und einen (alten) Zustand, verarbeiten die Action und liefern neuen Zustand zurück.
-            * **Action Creator**: Factory-Funktionen, die Action Objekte erzeugen
+            * **Actions** und **Reducer** wie bei useReducer gesehen, hier aber global für die ganze Anwendung
+              * **Actions**: Einfache JavaScript-Objekte, die beschreiben was in einer Anwendung passiert. Bestehen aus einem Type und einem fachlichen Payload.
+              * **Reducer**-Funktionen: Funktionen, in denen die Logik zur Verarbeitung des Zustands untergebracht ist. Sie erhalten eine Action und einen (alten) Zustand, verarbeiten die Action und liefern neuen Zustand zurück.
+            * **Action Creator**: Factory-Funktion, die ein Action Objekte erzeugt
           </textarea>
-        </section>
-        <!-- ============================================================================= -->
-        <section>
-          <h3>Actions</h3>
-          <ul>
-            <li class="fragment">
-              Pure JavaScript-Objekte, die eine Aktion in der Anwendung beschreiben
-            </li>
-            <li class="fragment">Haben üblicherweise <b>type</b> und <b>payload</b></li>
-            <li class="fragment">Über das <b>type</b>-Property können sie identifiziert werden</li>
-            <li class="fragment">Der <b>Payload</b> enthält Action-spezifische Daten</li>
-          </ul>
-
-          <pre class="fragment"><code class="javascript">
-  clearDraftAction = {
-    type: "editor/clearDraft"; // kein Payload erforderlich
-  }
-
-  setDraftTitleAction = {
-    type: "editor/setDraftTtiel",
-    newTitle: "..."  // Action-spezifischer Payload (hier: der neue Blog-Titel)
-  }
-</code></pre>
-        </section>
-        <section>
-          <h3>Reducer-Funktion #1</h3>
-          <ul>
-            <li class="fragment">
-              ...erhält einen (vorherigen) Zustand und eine <em>Action</em> als Parameter übergeben
-            </li>
-            <li class="fragment">...verarbeitet die Action</li>
-            <li class="fragment">...liefert dann den neuen, aktualisierten Zustand zurück</li>
-            <li class="fragment">...muss Seiteneffekt frei sein ("pure function")</li>
-          </ul>
-          <pre class="fragment"><code class="javascript" contenteditable data-trim>
-          reducer(old_state, action) => new_state
-        </code></pre>
-
-          <p class="fragment">
-            <em>In React mit useReducer (ohne Redux) einsetzbar</em>
-          </p>
-        </section>
-
-        <!-- ============================================================================= -->
-        <section>
-          <h3>Die reducer-Funktion #2</h3>
-          <ul>
-            <li class="fragment">
-              Bekommt den vorherigen Zustand übergeben und liefert neuen Zustand zurück (oder den
-              unveränderten alten)
-            </li>
-            <li class="fragment">
-              Zustand ist immutable! Kann mit der
-              <a href="https://github.com/immerjs/immer">Bibliothek "immer"</a> kombiniert werden
-            </li>
-          </ul>
-
-          <pre class="fragment"><code class="javascript">
-            function editorReducer(state = initalDraftPost, action) {
-              switch (action.type) {
-                case "editor/clearDraft":
-                  return initalDraftPost;
-                case "editor/setDraftBody":
-                  return { ...state, body: action.body };
-                case "editor/setDraftTitle":
-                  return { ...state, title: action.title };
-                default:
-                  return state;
-              }
-            }
-      </code></pre>
         </section>
 
         <section>
@@ -981,16 +966,6 @@ function ThemeChooser() {
             }
             }
           </code></pre>
-
-          <p class="fragment">🤔 Wofür könnten Action Creator sinnvoll sein?</p>
-          <ul>
-            <li class="fragment">Stellen sicher, dass Objekte korrekt aussehen</li>
-            <li class="fragment">Verbergen interne Struktur der Actions vor der Anwendung</li>
-            <li class="fragment">Können plausibilitätsprüfungen machen</li>
-            <li class="fragment">
-              Können Daten konvertieren, bevor sie in die Action übernommen werden
-            </li>
-          </ul>
         </section>
 
         <section>
@@ -1034,25 +1009,13 @@ function ThemeChooser() {
 
         <!-- ============================================================================= -->
         <section>
-          <h3>useSelector - Details</h3>
+          <h3>Abgeleitete Daten</h3>
           <ul>
+            <li class="fragment">Berechnungen etc.</li>
             <li class="fragment">
-              Um festzustellen, ob sich die ausgewählten Daten verändert haben, prüft Redux auf
-              <b>Identität</b>!
-            </li>
-            <li class="fragment">
-              Es wird deshalb empfohlen, nur einzelne Werte (keine Objekte) aus dem Store
-              auszuwählen - stattdessen mehrere useSelector-Aufrufe machen. Bei Objekten musst Du
-              eventuell die
-              <a href="https://react-redux.js.org/api/hooks#equality-comparisons-and-updates"
-                >shallowEqual-Funktion</a
-              >
-              übergeben.
-            </li>
-            <li class="fragment">
-              Du kannst natürlich auch "abgeleitete" Daten zurückliefern, Redux vergleicht nur den
-              von dir zurückgelieferten Wert, unabhängig davon, ob er "direkt" aus dem Store kommt
-              oder basierend auf dem Store "berechnet" wurde
+              Du kannst in useSelector auch "abgeleitete" Daten zurückliefern, Redux vergleicht nur
+              den von dir zurückgelieferten Wert, unabhängig davon, ob er "direkt" aus dem Store
+              kommt oder basierend auf dem Store "berechnet" wurde
             </li>
           </ul>
 
@@ -1069,31 +1032,46 @@ function ThemeChooser() {
             // AppHeader wird nur neu gerendert, 
             //    wenn sich deren RÜCKGABEWERT ändert
           </code></pre>
-        </section>
 
-        <section>
-          <h3>Der Store</h3>
-          <p>Ein <em>einziger</em> Store hält den <em>kompletten</em> Zustand</p>
-          <p class="fragment">
-            Der Store wird allen Componenten über die Wrapper-Komponente <em>Provider</em>
-            zur Verfügung gestellt
-          </p>
-          <pre class="fragment"><code class="typescript line-numbers" contenteditable data-trim>
-import { Provider } from 'react-redux';
-import { createStore } from 'redux';
-import { rootReducer } from './reducers';
+          <ul>
+            <li class="fragment">
+              <a href="https://github.com/reduxjs/reselect">reselect</a> bietet Caching für
+              berechnete Daten
+            </li>
+          </ul>
 
-// http://redux.js.org/docs/api/createStore.html
-const store = createStore(
-  rootReducer // reducer
-);
-ReactDOM.render(
-&lt;Provider store={store}>
-    &lt;App />
-&lt;/Provider>,
-mountNode
-);
-    </code></pre>
+          <pre class="fragment"><code class="javascript">
+            import { createSelector } from 'reselect'
+            
+            const fullnameSelector = createSelector(
+              state => state.person.firstname,  // input selector 1
+              state => state.person.lastname, // input selector 2
+              (firstname, lastname) => `${firstname} ${lastname}`
+            )
+            
+          </code></pre>
+
+          <ul>
+            <li class="fragment">
+              Nur wenn sich einer der "Input Selectors" ändert, wird die letzte Funktion ausgeführt
+            </li>
+            <li class="fragment">
+              Der letzen Funktion werden die Rückgabewerte aller Selektoren übergeben
+            </li>
+            <li class="fragment">Die letzte Funktion berechnet dann den eigentlichen Wert</li>
+          </ul>
+
+          <pre class="fragment"><code class="javascript">
+            function AppHeader() {
+              const fullname = useSelector(fullnameSelector);
+
+              return <h1>Good morning, {fullname}</h1>
+            }
+          </code></pre>
+
+          <ul>
+            <li class="fragment"></li>
+          </ul>
         </section>
 
         <!-- ============================================================================= -->
@@ -1121,53 +1099,7 @@ mountNode
           </ul>
         </section>
 
-        <section>
-          <h2>Übung: Der PostEditor mit Redux</h2>
-          <p>Vorbereitung:</p>
-          <ol>
-            <li class="fragment">Workspace <code>blog-example/workspace-redux</code></li>
-            <li class="fragment">Bitte <code>npm install</code> hier ausführen</li>
-            <li class="fragment">
-              danach <code>npm start</code> ausführen (den laufenden Prozess bitte beenden)
-            </li>
-            <li class="fragment">Den Workspace in der IDE/Editor öffnen</li>
-            <li class="fragment">
-              Wenn die Anwendung läuft, bitte "Hand heben" in Teams, dann geht's weiter mit der
-              eigentlichen Übung 🙋‍♀️
-            </li>
-          </ol>
-        </section>
-        <section>
-          <h2>Übung: Der PostEditor mit Redux</h2>
-          <p>
-            Der Workspace enthält zwei Verzeichnisse: <code>ui</code> für Komponenten und
-            <code>redux</code> für Logik. Diese Aufteilung ist <em>nicht empfehlenswert</em> in
-            "echten" Anwendungen (dort bitte nach Fachlichkeit aufteilen), macht uns hier aber das
-            Leben einfacher.
-          </p>
-
-          <p>Schritte:</p>
-          <ol>
-            <li class="fragment">
-              Implementiere in <code>editor-slice.js</code> die Action Creator-Funktionen (siehe
-              dort)
-            </li>
-            <li class="fragment">Vervollständige die reducer-Funktion</li>
-            <li class="fragment">
-              Migriere den (nicht funktionierenden) <code>PostEditor</code> so, dass der Draft Post
-              aus dem Redux State gelesen und aktualisiert wird (<code>useSelector</code> und
-              <code>useDispatch</code>)
-            </li>
-            <li class="fragment">
-              Vervollständige die <code>AppHeader</code>-Komponente, so dass diese den "Clear
-              Draft"-Button anzeigen und auslösen kann
-            </li>
-
-            <li class="fragment">In den drei Dateien sind todos eingetragen.</li>
-            <li class="fragment">Mögliche Lösung in <code>steps/5-redux</code></li>
-            <li class="fragment">Wenn Du fertig bist, bitte "Hand heben" in Teams 🙋‍♀️</li>
-          </ol>
-        </section>
+        <!--      
         <section>
           <h3>Redux</h3>
           <h2>Asynchrone Actions</h2>
@@ -1195,7 +1127,7 @@ mountNode
         <section>
           <h3>Redux</h3>
           <h2>Asynchrone Actions</h2>
-          <em>Grundsätzliche Idee, bei allen Bibliotheken (Thunk, Saga, Observable) ähnlich</em>
+          <em>Grundsätzliche Idee</em>
           <ul>
             <li class="fragment">
               Im <b>Action Creator</b> kann asynchroner Code ausgeführt werden
@@ -1204,30 +1136,11 @@ mountNode
               Es können <b>mehrere Actions</b> innerhalb des Action Creators dispatched werden
             </li>
             <li class="fragment">
-              Alle genannten Bibliotheken werden über <b>Middlewares</b> eingebunden
+              Alle genannten Bibliotheken werden über die <b>Redux Middleware API</b> eingebunden, die eine Art "Plug-in"-System für Redux ermöglicht
             </li>
           </ul>
         </section>
 
-        <section>
-          <h3>Middleware</h3>
-          <ul>
-            <li class="fragment">
-              Eine Middleware-Funktion bekommt alle dispatchen Actions übergeben, bevor sie in den
-              Store gelangen
-            </li>
-            <li class="fragment">
-              Die Middleware kann die Action annehmen, verändern, ablehnen und/oder weiterleiten
-            </li>
-            <li class="fragment">Typische Anwendungsfälle: Logging, asynchrone Verarbeitung</li>
-            <li class="fragment">
-              Die Middleware-Funktionen werden bei der Konfiguration des Stores angegeben
-            </li>
-            <li class="fragment">
-              In der Regel schreibst Du keine Middlewares selbst, sondern verwendest fertige
-            </li>
-          </ul>
-        </section>
 
         <section>
           <h3>Asynchrone Actions</h3>
@@ -1332,12 +1245,6 @@ mountNode
               };
             }    </code></pre>
           </ul>
-          <!-- <p class="fragment">
-                <strong
-                  >Action-Creators sind die einzigen Teile einer Redux-Anwendung, die asynchrone
-                  Operationen ausführen dürfen</strong
-                >
-              </p> -->
         </section>
         <section>
           <h2>Redux Thunk</h2>
@@ -1370,15 +1277,9 @@ mountNode
               };
             }    </code></pre>
           </ul>
-          <!-- <p class="fragment">
-                <strong
-                  >Action-Creators sind die einzigen Teile einer Redux-Anwendung, die asynchrone
-                  Operationen ausführen dürfen</strong
-                >
-              </p> -->
-        </section>
+        </section> -->
 
-        <section>
+        <section id="redux-toolkit">
           <h3>Redux Toolkit</h3>
           <p>
             <em
@@ -1401,6 +1302,14 @@ mountNode
               Outstanding TypeScript support! Ihr wollt das nicht ohne TypeScript verwenden 😉
             </li>
           </ul>
+        </section>
+
+        <!-- ============================================================================= -->
+        <section>
+          <h3>Redux Toolkit Beispiel</h3>
+
+          <p>👉👉 Beispiel: 20_redux_toolkit_workspace</p>
+          <p>👉👉 editor-slice konvertieren, PostEditor anpassen</p>
         </section>
 
         <section>
@@ -1512,37 +1421,323 @@ mountNode
           </code></pre>
         </section>
 
-        <!-- ============================================================================= -->
         <section>
-          <h3>Asynchrone Actions</h3>
+          <h3>Was nehme ich denn jetzt?</h3>
+          <h3>Redux vs Context</h3>
+          <p class="fragment">
+            Redux hat Dev Tools, Time Travelling, Middlewares, globale Actions und Reducers/State
+          </p>
+          <p class="fragment">Redux ist sehr optimiert für Performance (häufige Updates)</p>
+          <p class="fragment">Context von der API her einfacher (aber auch nicht so mächtig)</p>
+          <p class="fragment">
+            Redux lässt feingranularere Auswahl aus dem globalen Zustand zu (verhindert unnötige
+            Renderings)
+          </p>
+        </section>
+
+        <section>
+          <h3>Redux vs Context</h3>
+          <h3><em>Wie entscheiden wir uns?</em></h3>
+          <p class="fragment">
+            Entscheidung 1: Mischform: Redux <b>und</b> Context? Oder: Redux <b>oder</b> Context
+          </p>
+          <p class="fragment">Entscheidung 2: Was kommt wohin?</p>
+          <p class="fragment">Auth-State (eingeloggter Benutzer)</p>
+          <p class="fragment">Api-State: Netzwerk Request(s) laufen gerade</p>
+          <p class="fragment">Draft-Post: editierters, neues, Post</p>
+        </section>
+
+        <!-- ============================================================================= -->
+        <section id="t-mobx">
+          <h2>MobX</h2>
+
+          <p>
+            Klassiker im <a href="https://michel.codes/blogs/mobx6">neuen Gewand</a> (Version 6 vom
+            September 2020)
+          </p>
+        </section>
+
+        <section>
+          <h3>MobX</h3>
           <ul>
-            <li class="fragment">Die Redux Thunk Middleware ist in Redux Toolkit integriert</li>
             <li class="fragment">
-              Asynchrone Action Creator können aber nicht als reducer definiert werden, du schreibst
-              sie wie in Redux außerhalb von createSlice hin.
+              <a href="https://mobx.js.org/README.html">https://mobx.js.org/README.html</a>
+            </li>
+            <li class="fragment">Claim: <b>Simple, scalable state management.</b></li>
+            <li class="fragment">
+              Aktuelle Version und Library für React:
+              <a href="https://mobx.js.org/react-integration.html">mobx-react-lite</a>
             </li>
             <li class="fragment">
-              Mit <a href="https://redux-toolkit.js.org/api/createAsyncThunk">createAsyncThunk</a>
-              kannst Du vereinfachte Thunk-Actions schreiben, die automatisch Lifecycle Actions
-              dispatchen (request started, request failed, ...)
+              Achtung #1: mobx-react braucht ihr nicht (wenn ihr Hooks API verwendet)
+            </li>
+            <li class="fragment">
+              Achtung #2: Doku teilweise veraltet, die nicht direkt auf mobx.js.org liegt!
+            </li>
+            <li class="fragment">
+              Basiert auf der Idee von "observable State", der von Euren Komponenten "observiert"
+              wird
             </li>
           </ul>
         </section>
 
         <!-- ============================================================================= -->
         <section>
-          <h3>Redux Toolkit Beispiel</h3>
+          <h3>MobX Schritt-für-Schritt</h3>
 
-          <p>👉👉 Beispiel: 20_redux_toolkit_workspace</p>
-          <p>👉👉 editor-slice konvertieren, PostEditor anpassen</p>
+          <p>Hands-On 👉 <code>advanced/exercices/7a-mobx</code></p>
+          <p>Fertig 👉 <code>advanced/steps/7a-mobx</code></p>
+        </section>
+
+        <!-- ============================================================================= -->
+        <section>
+          <h3>MobX, Beispiel #1</h3>
+          <ul>
+            <li class="fragment">
+              Der Zustand in MobX wird entweder in JavaScript-Objekten oder ES6-Klassen gehalten
+            </li>
+            <li class="fragment">
+              Ihr könnt beides verwenden, ES6-Klassen weiter verbreitet und in der Doku auch
+              empfohlen
+            </li>
+            <li class="fragment">Eine Klasse müsst ihr zum "Observer" machen</li>
+          </ul>
+
+          <pre class="fragment"><code class="javascript">
+class BlogAppState = {
+  blogPosts:Array&lt;BlogPost> = [];
+
+  constructor() {
+    // Diese Instanz "observieren", MobX verfolgt jetzt alle Änderungen
+    makeAutoObservable(this);
+  }
+}        
+
+// Unser globaler Zustand
+const blogAppState = new blogAppState();  
+        </code></pre>
+
+          <ul>
+            <li class="fragment">
+              Eine Komponente kann zum Observer werden, und rendert sich dann bei allen Änderungen
+              an der beobachteten Klasse:
+            </li>
+          </ul>
+          <pre class="fragment"><code class="javascript">
+const PostList = observer(function PostList() {
+  return &lt;div>
+    {blogAppState.blogPosts.map( p => /* wie gewohnt */ )}
+  &lt;/div>  
+})
+        </code></pre>
+        </section>
+
+        <!-- ============================================================================= -->
+        <section>
+          <h3>MobX: Actions</h3>
+          <ul>
+            <li class="fragment">
+              Der Zustand in MobX wird über Actions verändert. Dabei handelt es sich um Methoden an
+              einer Klasse.
+            </li>
+            <li class="fragment">
+              Wenn der Zustand außerhalb einer Action verändert wird, gibt es einen Fehler. Auf
+              diese Weise erzwingt MobX eine gewisse Architektur
+            </li>
+            <li class="fragment">
+              Die Action-Methoden werden per Konvention von <code>makeAutoObservable</code> erkannt,
+              oder ihr gebt sie explizit an
+            </li>
+            <li class="fragment">Das Laden von Daten könnte z.B. eine Action sein:</li>
+          </ul>
+
+          <pre class="fragment"><code class="javascript">
+class BlogAppState = {
+  blogPosts:Array&lt;BlogPost> = [];
+            
+  constructor() { makeAutoObservable(this); }
+
+  async loadPosts() {
+    const await response = fetch("...");
+    const posts = await response.json();
+    this.blogPosts = posts;
+  }
+}
+          </code></pre>
+
+          <pre class="fragment"><code class="javascript">
+// Auslösen:
+function App() {
+  React.useEffect(  () => { blogState.loadPosts() }, []);
+
+  // ...
+}            
+          </code></pre>
+        </section>
+
+        <!-- ============================================================================= -->
+        <section>
+          <h3>Berechnete Werte: Computed Properties</h3>
+          <ul>
+            <li>
+              MobX kann berechnete Werte cachen. Berechnete Werte basieren auf observierten Daten.
+            </li>
+            <li>
+              Beispiel: Auf Basis der Blog-Post-Liste (beobachtet) und eines Sortierkriteriums
+              (beobachtet) wird eine sortierte Blog-Post-Liste erzeugt. Die sortierte Liste ist ein
+              "berechneter" Wert.
+            </li>
+            <li>
+              Der Wert wird dann nur neuberechnet, wenn sich einer der darin verwendeten Werte
+              ändert (Liste oder Kriterium).
+            </li>
+            <li>Ein Computed Property ist in der Regel eine getter-Methode an einer Klasse</li>
+          </ul>
+        </section>
+        <section>
+          <h3>Berechnete Werte #2</h3>
+          <p>Beispiel</p>
+
+          <pre class="fragment"><code class="javascript">
+class BlogAppState = {
+  blogPosts:Array&lt;BlogPost> = [];
+  orderBy:string = "";
+  currentUser: string = "";
+            
+  constructor() { makeAutoObservable(this); }
+
+  get orderedPosts loadPosts() {
+    const posts = [...blogPosts];
+    posts.sort(orderBy); // vereinfacht
+
+    return posts;
+  }
+}              
+            </code></pre>
+
+          <pre class="fragment"><code class="javascript">
+blogAppState.orderedPosts; // Liste wird initial berechnet
+blogAppState.orderedPosts; // Liste wird NICHT neu berechnet (Cache!)
+
+blogAppState.orderBy = "date";              
+blogAppState.orderedPosts; // Liste wird neu berechnet
+
+blogAppState.currentUser = "Klaus";
+blogAppState.orderedPosts; // Liste wird NICHT berechnet
+            </code></pre>
+        </section>
+
+        <!-- ============================================================================= -->
+        <section>
+          <h3>Observed Components</h3>
+
+          <ul>
+            <li class="fragment">
+              Eine Komponente, die mit dem State arbeitet, muss ein Observer werden
+            </li>
+            <li class="fragment">
+              Dazu wird sie der <code>observe</code>-Funktion übergeben, die eine eine observed
+              Komponente zurückliefert
+            </li>
+            <li class="fragment">Das ist für den Aufrufer vollständig transparent</li>
+            <li class="fragment">
+              Die observed Komponente wird immer dann neu gerendert, wenn sich einer der Werte
+              verändert, auf die sie zugreift
+            </li>
+            <li class="fragment">
+              Die observed Komponente rendert sich daher auch nicht neu, wenn ihre Parent-Komponente
+              sich neu rendert
+            </li>
+            <li class="fragment">Ausnahme: die Parent-Kompoenten übergibt veränderte Properties</li>
+          </ul>
+          <pre class="fragment"><code class="javascript">
+            const PostList = observer(function PostList() {
+              return &lt;div>
+                {blogAppState.blogPosts.map( p => /* wie gewohnt */ )}
+              &lt;/div>  
+            })  
+          </code></pre>
+        </section>
+
+        <section>
+          <h3>Bereitstellen des Zustands</h3>
+
+          <ul>
+            <li>MobX ist es egal, wo der Zustand herkommt; es ist ein beliebiges Observable</li>
+            <li>
+              Typischerweise wird der Zustand in React-Anwendungen über genau einen Context in die
+              Anwendung gereicht
+            </li>
+            <li>
+              Das Context-Objekt wird sich nie ändern, da sich nur die Werte in der Klasse
+              verändern.
+            </li>
+            <li>
+              Deswegen wird eine konsumierende Komponente auch nie neu gerendert, weil sich der
+              Context nicht ändert
+            </li>
+            <li>
+              Deswegen muss die Komponente ein Observer sein; wenn sich ein Wert aus dem Context
+              ändert, rendert MobX neu
+            </li>
+          </ul>
+        </section>
+        <section>
+          <h3>Bereitstellen des Zustands - Beispiel</h3>
+
+          <pre class="fragment"><code class="javascript">
+const context = {
+  blog: new BlogAppState(),
+  auth: new AuthenticationState()
+}
+function StoreProvider({ children }) {
+  return (
+    &lt;StoreContext.Provider value={context}>
+      {children}
+    &lt;/StoreContext.Provider>
+  );
+}
+
+export function useStore() {
+  return React.useContext(StoreContext);
+}
+          </code></pre>
+
+          <pre class="fragment"><code class="javascript">
+const PostList = observe(function PostList() {
+  const { blog } = useStore();
+
+  // PostList wird nur neu gerendert, wenn sich BlogPost-Liste ändert
+  return blog.posts.map(&lt;BlogPost id={...});
+})           
+          </code></pre>
+        </section>
+
+        <section>
+          <h3>MobX vs. Redux</h3>
+
+          <ul>
+            <li class="fragment">Redux eher funktionale Programmierung, MobX eher OO</li>
+            <li class="fragment">Viel Freiheiten mit MobX...</li>
+            <li class="fragment">...aber auch viel "Magie"</li>
+            <li class="fragment">
+              In großen Modellen manchmal schwer zu verstehen, was eigentlich wo und wie "observed"
+              wird
+            </li>
+            <li class="fragment">Observer-Komponenten eher untypisch für React (noch)</li>
+            <li class="fragment">Developer Tooling nicht so gut wie Redux</li>
+            <li class="fragment">Doku, StackOverflow etc. deutlich weniger umfänglich als Redux</li>
+            <li class="fragment">👉 Beide Bibliotheken gute Wahl und können verwendet werden</li>
+            <li class="fragment">👉 "Für Redux ist noch niemand entlassen worden"</li>
+          </ul>
         </section>
 
         <!-- ============================================================================= -->
         <section>
           <h2>Geschafft! 😊</h2>
           <h3>Vielen Dank für Eure Teilnahme!</h3>
-          <h3>Happy Statemanagement 🍻</h3>
-          <p>Wenn ihr noch Fragen habt, könnt ihr mich erreichen:</p>
+          <h3>Happy Statemanagement 🌻</h3>
+          <p>Wenn ihr noch Fragen habt, könnt ihr mich gerne kontaktieren:</p>
           <p>Mail: <a href="mailto:nils@nilshartmann.net">nils@nilshartmann.net</a></p>
           <p>
             Web: <a href="https://nilshartmann.net" target="_blank">https://nilshartmann.net</a>
@@ -1550,9 +1745,6 @@ mountNode
           <p>
             Twitter: <a href="https://twitter.com/nilshartmann" target="_blank">@nilshartmann</a>
           </p>
-        </section>
-        <section>
-          <img src="slides/images/Deckblatt-und-Schlussblatt_devmedia_Trainings.png" />
         </section>
       </div>
     </div>
