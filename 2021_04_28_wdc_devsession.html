@@ -123,7 +123,7 @@ Das ganze natürlich anhand vieler Code-Beispiele, um einen Eindruck der praktis
             ### Beteiligt Euch gerne 
 
             * Ihr könnt jederzeit Fragen stellen, kommentieren, Feedback geben etc.
-            * Ich versuche, zwischendurch immer wieder Live Coding zu machen
+            * Ich versuche, zwischendurch immer wieder, Code im Editor zu zeigen
               * Dadurch sind wir flexibel und nicht an eine feste Slide-Reihenfolge gebunden
               * Außerdem für Euch (hoffentlich) spannender als Slide-Watching
             * Beteiligung per Chat oder Audio
@@ -157,6 +157,7 @@ Das ganze natürlich anhand vieler Code-Beispiele, um einen Eindruck der praktis
               <a href="#/t-redux">Redux</a> und <a href="#/t-redux-toolkit">Redux Toolkit</a>
             </li>
             <li class="fragment"><a href="#/t-mobx">MobX</a></li>
+            <li class="fragment"><a href="#/t-recoil">Ausblick: Recoil</a></li>
           </ul>
         </section>
 
@@ -1812,9 +1813,151 @@ const PostList = observe(function PostList() {
             <li class="fragment">Observer-Komponenten eher untypisch für React (noch)</li>
             <li class="fragment">Developer Tooling nicht so gut wie Redux</li>
             <li class="fragment">Doku, StackOverflow etc. deutlich weniger umfänglich als Redux</li>
+
+            <li class="fragment">
+              Arbeiten mit asynchronen Daten in MobX "natürlicher", Thunk Actions sehr ungewöhnlich
+            </li>
+
+            <li class="fragment">
+              Computed Properties in MobX sehr einfach, re-select gewöhnungsbedürftig
+            </li>
+
             <li class="fragment">👉 Beide Bibliotheken gute Wahl und können verwendet werden</li>
             <li class="fragment">👉 "Für Redux ist noch niemand entlassen worden"</li>
           </ul>
+        </section>
+
+        <section data-markdown id="t-recoil">
+          <textarea data-template>
+            ## Recoil
+
+            * https://recoiljs.org
+            * Vor ca. einem Jahr vorgestellt
+            * Von Facebook, aber nicht React-Team
+            * Man definiert "Atome", das sind unabhängige, globale Zustände
+            * Auf die Atome hat man lesend und schreibend Zugriff wie bei `useState`, aber aus allen Komponenten
+          </textarea>
+        </section>
+
+        <!-- ============================================================================= -->
+        <section>
+          <h3>Recoil</h3>
+
+          <pre class="fragment"><code class="javascript">
+          const itemsState = atom({
+            key: 'shoppingListItems',
+            default: [
+              { name: "Book", 
+                quantitiy: 1
+              }
+            ],
+          });
+
+          function App() {
+            const [items, setItems] = useRecoilState(itemsState);
+
+            // render list of items
+          }
+        </code></pre>
+        </section>
+
+        <!-- ============================================================================= -->
+        <section>
+          <h3>Recoil: Selektoren</h3>
+
+          <ul>
+            <li class="fragment">Berechnete Daten werden über Selektoren zur Verfügung gestellt</li>
+
+            <li class="fragment">
+              Ein Selektor kann Atome bestimmten, von denen er abhängi ist. Wenn eines der Atome
+              sich ändert, wird der Wert des Selektors neu bestimmt:
+            </li>
+          </ul>
+
+          <pre class="fragment"><code class="javascript">
+            const itemsState = atom({ /* ... */ }); // wie gesehen
+            const oderByState = atom({ key: "orderBy", default: "desc" });
+
+            const orderedItemsSelector = selector({
+              key: 'orderedItems',
+              get: ({get}) => {
+                const allItems = get(itemsState);
+                const orderBy = get(orderByState);
+               
+                return ... /* allItems basierend auf orderBy sortieren */
+              }
+            });
+
+            function OrderedList() {
+              const orderedItems = useRecoilValue(orderedItemsSelector);
+
+              // sortierte Liste rendern
+            }
+                        
+          </code></pre>
+        </section>
+
+        <!-- ============================================================================= -->
+        <section>
+          <h3>Recoil: asynchrone Daten</h3>
+
+          <ul>
+            <li class="fragment">Atome und Selektoren können asynchron sein</li>
+
+            <li class="fragment">
+              Beispiel: ein asynchroner Selektor, der Daten lädt, sobald sich eine Id ändert
+            </li>
+          </ul>
+
+          <pre class="fragment"><code class="javascript">
+            const blogPostIdState = atom({ key: "blogPostId", default: null }); 
+            const blogPostSelector = selector({
+              key: "blogPost",
+              get: async ({get}) => {
+                const postId =  get(blogPostIdState)  // wenn sich Id ändert, wird Selector neu ausgeführt
+                const data = await fetch(`/api/posts/${postId}).json(); // vereinfacht
+                return data;
+              },
+            })
+          </code></pre>
+
+          <ul>
+            <li class="fragment">Recoil arbeitet bereits mit React Suspense zusammen:</li>
+          </ul>
+
+          <pre class="fragment"><code class="javascript">
+            function BlogPostPage() {
+              const blogPost = useRecoilValue(blogPostSelector);
+
+              return ...;
+            }
+
+            function App() {
+              return   &lt;Suspense fallback={"Blog Post is loading"}>
+                &lt;BlogPostPage />
+              &lt;/Suspense>
+            }
+          </code></pre>
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
+            ### Recoil vs. Redux/Mobx
+
+            * Recoil noch sehr jung, interessantes Konzept
+            * Selektoren ähneln den computed Properties von MobX
+            * Wo bringt man seine Geschäftslogik unter?
+              * MobX: Store-Klassen
+              * Redux: Actions und Reducer
+              * Recoil: Atome, aber:
+              * Recoil möglicherweise eher nur für Daten, weniger für Logik ("globales useState")
+            * Recoil arbeitet mit Suspense und [Concurrent Rendering](https://recoiljs.org/blog/2020/09/15/0.0.11-released/#experimental-concurrent-mode-support) zusammen  
+              * noch experimentell
+              * für MobX und Redux noch unklar, technisch schwierig umzusetzen
+            * Recoil eher für unabhängige Daten (z.B. Graphik-Programm)
+            * Recoil in jedem Fall React-abhängig, Kerne von MobX und Redux sind React-unabhängig
+
+          </textarea>
         </section>
 
         <!-- ============================================================================= -->
