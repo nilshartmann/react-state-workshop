@@ -1397,6 +1397,11 @@ function ThemeChooser() {
             <li>
               Outstanding TypeScript support! Ihr wollt das nicht ohne TypeScript verwenden 😉
             </li>
+
+            <li class="fragment">
+              Neu: <a href="https://rtk-query-docs.netlify.app/">RTK Query</a>: Data Fetching und
+              Caching für Redux
+            </li>
           </ul>
         </section>
 
@@ -1519,9 +1524,21 @@ function ThemeChooser() {
 
         <section data-markdown>
           <textarea data-template>
-            ### Redux: wann einsetzen?
+            ### "Modernes" Redux
 
-            * Große Anwendungen
+            * Grundsätzlich: Redux ist leichtgewichtiger geworden(?)
+              * Hooks API
+              * Toolkit mit immer- und TypeScript-Support und guter Vorkonfiguration
+              * Spart beides viel Boilerplate
+            * Sehr gute und ausführliche Dokumentation   
+          </textarea>
+        </section>
+
+        <section data-markdown>
+          <textarea data-template>
+            
+            ### Redux: wann einsetzen?
+            * "Große" Anwendungen
               * mit vielen globalen Daten
               * mit viel Logik
             * Arbeiten mit mehreren Teams
