@@ -372,9 +372,9 @@ const newPerson = {
             const person = { name: "Klaus", address: { city: "Berlin", country: "Germany" }, hobbies: ["Musik"] };
 
             const newPerson = produce(person, draft => {
-              person.name = "Susi";
-              person.address.city = "Hamburg";
-              person.hobbies.push("Programmieren")
+              draft.name = "Susi";
+              draft.address.city = "Hamburg";
+              draft.hobbies.push("Programmieren")
             })
 
             newPerson; // Neues Objekt!
@@ -408,7 +408,7 @@ const newPerson = {
                 const newPerson = produce(person, draft => {
                   // draft kann verändert werden, als ob es ein mutable Objekt sei
                   // und zwar auf allen Ebenen des Objekt-Graphen
-                  person.address.city = newCity;
+                  draft.address.city = newCity;
                 })
   
                 // 😊
@@ -442,7 +442,7 @@ const newPerson = {
               function handlePersonChange(newCity) {
                 // updatePerson liefert ein draft für den aktuellen Zustand
                 // und setzt den draft dann als neuen Zustand
-                updatePerson(draft => person.address.city = newCity)
+                updatePerson(draft => draft.address.city = newCity)
               }
             }
           </code></pre>
